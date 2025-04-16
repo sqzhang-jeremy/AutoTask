@@ -1,7 +1,9 @@
 import traceback
 import re
 import copy
-import openai
+from openai import OpenAI
+
+client = OpenAI()
 import json
 import pickle
 import os
@@ -23,26 +25,24 @@ else:
     cache = {}
 
 
-def cal_embedding(text, model_name='text-embedding-ada-002'):
+def cal_embedding(text, model_name='text-embedding-3-large'):
     if type(text) == str:
         return cal_embedding([text], model_name)[0]
     to_call_text = [x for x in text if x not in cache]
     if len(to_call_text) > 0:
         while True:
             try:
-                result = openai.Embedding.create(
-                    model=model_name,
-                    input=to_call_text
-                )
+                result = client.embeddings.create(model=model_name,
+                input=to_call_text)
                 break
             except Exception as e:
                 traceback.print_exc()
                 time.sleep(2)
 
-        for idx, d in enumerate(result['data']):
-            cache[to_call_text[idx]] = d['embedding']
-        with open('./cache/ebd.pickle', 'wb') as f:
-            pickle.dump(cache, f)
+        for idx, d in enumerate(result.data):
+            cache[to_call_text[idx]] = d.embedding
+        # with open('./cache/ebd.pickle', 'wb') as f:
+        #     pickle.dump(cache, f)
     return [cache[x] for x in text]
 
 
@@ -237,16 +237,15 @@ def persist_to_file(file_name, use_cache=True):
 @persist_to_file("./cache/gpt_cache.pickle")
 def chat(prompt, tag):
     print('connecting to gpt')
-    response = openai.ChatCompletion.create(
-        model='gpt-4-1106-preview',
+    response = client.chat.completions.create(
+        model='gpt-4o',
         messages=prompt,
         temperature=0.5,
-        stream=True  # this time, we set stream=True
-    )
+        stream=True)
     collected_messages = ""
     print('start streaming...')
     for chunk in response:
-        chunk_message = chunk['choices'][0]['delta'].get('content', '')
+        chunk_message = chunk.choices[0].delta.content or ""
         print(chunk_message, end="")
         collected_messages += chunk_message
 
@@ -462,21 +461,35 @@ Note that:
     (1) The element with the highest score will be choosen as the next element to be operated. If you have more than one top scoring option in your scoring, it's a good idea to highlight the score of one of the most likely candidates to avoid confusion.
     (2) Your score should be accurate to two decimal places.
     (3) If you think none of the elements can be the next to be operated, you can try to explore the UI to gather more information and rating the elements according to their semantic simialrities with the user task.
-    (4) <scroll /> element means there is a list and you can interact with it by scrolling forward. If you want to explore more, you can also try giving <scroll/> a relatively high scorat. The score of the <scroll /> should always be higher than that of those appearantly unrelated with the task.
+    (4) <scroll /> element means there is a list and you can interact with it by scrolling forward. If you want to explore more, you can also try giving <scroll/> a relatively high score. The score of the <scroll /> should always be higher than that of those appearantly unrelated with the task.
+    (5) A screenshot of the current UI is provided. Use this visual information to better understand the context and layout of UI elements.
 For each option, provide a confidence rating from 1.00-10.00, based on the relation of each option to the task, where 1.00 is the lowest tier indicating complete irrelevance and may lead to errors, 2.00-4.00 is the second tier indicating minor relevance, 4.00-6.00 is the medium tier indicating neutrality, 6.00-8.00 indicates higher relevance, possibly a candidate, and 10.00 indicates the most likely to be chosen and executed.
+Please do not make comments in your output and follow the format strictly.
 The structure of the output should be: {
-    "id_x": <rating>, ...}, where "id_x" is the id of an operational element (you should replace "x" with an actual value and iterate over all possible values), and "<rating>" denotes its rating.
-Example:
-{
-    "id_1": 5.53, "id_2": 9.71, "id_3": 3.20
-}
-Think step by step and output your reasoning process:
-Step 1: think about ["History operation sequence"],what has been done,especially pay attention to those steps which is wrong and caused navigate back if any;
-Step 2: think step by step on the ["Succesive Results"] of each UI options GIVEN by user, which represents the subsequent items after operating on them, and the ["possible paths to UI target"] GIVEN by user, which was suggested by expert knowledge;
-Step 3: decide what should be done next. Possible operations: click, edit (text input), scroll. Pay attention to those steps which is wrong and caused navigate back if any;
-Step 4: Synthesize the above output to output a JSON object with scores.
+    "id_x": <rating>, ...}, where "id_x" is the id of an operational element (you should replace "x" with an actual value and iterate over all possible values), and "<rating>" denotes its rating. 
 
-Strictly output a format like "id_1": 3.00, do not tamper with it to make it look like "scroll_1": 3.00, etc., it must start with id_.
+Think step by step using the following process internally. Do not output these steps; use them only to determine the final JSON ratings:
+Step 1: Analyze ["History operation sequence"], noting past actions, especially any errors or backtracking.
+Step 2: Evaluate ["Succesive Results"] for each UI option and consider the expert-suggested ["possible paths to UI target"].
+Step 3: Decide the most logical next operation (click, edit, scroll), considering the goal and context from Steps 1 & 2.
+Step 4: Based on the analysis in Steps 1-3, synthesize the confidence ratings for each available UI element.
+
+Final Output Instructions:
+Your *only* output should be a single, valid JSON object.
+1.  **Format:** The JSON object must contain key-value pairs where the key is the element ID (strictly formatted as `"id_x"`, replacing `x` with the actual number) and the value is the numerical rating.
+2.  **Ratings:** Ratings must be accurate to two decimal places (e.g., `8.50`, `3.00`).
+3.  **Content:** Include ratings for all actionable UI elements presented.
+4.  **Strict Compliance:**
+    * Keys *must* start with `"id_"`. Do not alter this prefix (e.g., no `"scroll_1"`).
+    * The output must contain *only* the JSON object. No introductory text, no concluding text, no explanations.
+    * **Crucially: Do not include any comments (like `// ...` or `/* ... */`) within the JSON output.** The output must be pure JSON data.
+
+Example of the required final output format:
+{
+    "id_1": 5.53,
+    "id_2": 9.71,
+    "id_3": 3.20
+}
 """
         },
         {

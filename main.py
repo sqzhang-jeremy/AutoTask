@@ -46,7 +46,7 @@ def heat_beat():
     """
     global force_load_count, auto_load
     if auto_load:
-        force_load_count += (2.0 / 5.0)
+        force_load_count += 1
     force_load = force_load_count >= 2
     if force_load:
         force_load_count = 0
@@ -87,6 +87,7 @@ def demo() -> Union[str, Response]:
     auto_load = False
     while screen.semantic_info_no_warp == []:
         return Response("0")
+    
     if STATUS == "start":
         STATUS = "running"
         model = Model(screen=screen, description=TASK,
@@ -242,7 +243,7 @@ def on_key_release(key):
         print("Task execution started!")
     elif 'char' in key.__dict__ and key.char == 'l':
         if key.char == 'l':
-            force_load_count += 1
+            force_load_count += 2
         else:
             force_load_count = 0
 
@@ -277,7 +278,7 @@ def main():
     MODE = args.mode
     LOAD = args.load
     print(LOAD)
-    PER = args.percentage
+    # PER = args.percentage
     if LOAD:
         print("Loading UI Knowledge")
         Graph = UINavigationGraph("cache/random/Graph_"+str(PER)+".pkl")

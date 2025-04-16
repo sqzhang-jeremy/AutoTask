@@ -9,7 +9,6 @@ import openai
 import sys
 sys.path.append('..')
 
-openai.api_key = os.getenv('OPENAI_API_KEY')
 
 
 class Evaluate():
@@ -125,8 +124,14 @@ Please output the next element to be operated.""".format(self.model.task, [ACTIO
         scores = [1.0]*len(self.model.screen.semantic_info_no_warp_with_id)
         for key, rating in self.resp.items():
             if key.startswith('id_'):
-                idx = int(key[len('id_'):]) - 1
-                scores[idx] = rating
+                try:
+                    idx = int(key[len('id_'):]) - 1
+                    if 0 <= idx < len(scores):
+                        scores[idx] = rating
+                    else:
+                        print(f"Warning: Index {idx} out of range for scores list with length {len(scores)}")
+                except ValueError:
+                    print(f"Warning: Could not parse ID from key: {key}")
         self.score = np.array(scores)+similarity
         if self.weights == []:
             self.weights = [1.0] * len(self.score)

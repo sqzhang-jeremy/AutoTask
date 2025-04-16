@@ -1,0 +1,3 @@
+<input id=1 class='com.google.android.deskclock:id/label_input_field'  enabled editable > Label </input>
+<button id=2 class='android:id/button2'  > Cancel </button>
+<button id=3 class='android:id/button1'  > OK </button>

@@ -4,7 +4,6 @@ import openai
 
 from Modules.utility import sort_by_similarity_score, sort_by_similarity_with_index
 
-openai.api_key = os.getenv('OPENAI_API_KEY')
 
 
 class Predict():
@@ -57,7 +56,7 @@ class Predict():
         node = self.model.refer_node
         graph = node.graph
         edges = graph.find_neighbour_edges(node)
-        edges_node = list(map(lambda x: x.node, edges))
+        edges_node = list(map(lambda x: str(x.node), edges))
         for i, e in enumerate(SEMANTIC_INFO):
             sims = sort_by_similarity_score(e, edges_node)
             if sims and max(sims) > 0.97:

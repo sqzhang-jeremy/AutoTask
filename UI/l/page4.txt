@@ -1,0 +1,26 @@
+<div id=1  description='Alarm' enabled  clickable> Alarm
+    <p class=''  > Alarm </p>
+ </div>
+<div id=2  description='Clock' enabled  clickable> Clock
+    <p class=''  > Clock </p>
+ </div>
+<div id=3  description='Timer' enabled  clickable> Timer
+    <p class=''  > Timer </p>
+ </div>
+<div id=4  description='Stopwatch' enabled  clickable> Stopwatch
+    <p class=''  > Stopwatch </p>
+ </div>
+<button id=5 class='' description='More options' >  </button>
+<p class='com.google.android.deskclock:id/timer_setup_time' description='0 hours, 0 minutes, 5 seconds' > 00h 00m 05s </p>
+<div id=6 class='com.google.android.deskclock:id/timer_setup_delete' description='Delete 5' enabled  clickable>  </div>
+<button id=7 class='com.google.android.deskclock:id/timer_setup_digit_1'  > 1 </button>
+<button id=8 class='com.google.android.deskclock:id/timer_setup_digit_2'  > 2 </button>
+<button id=9 class='com.google.android.deskclock:id/timer_setup_digit_3'  > 3 </button>
+<button id=10 class='com.google.android.deskclock:id/timer_setup_digit_4'  > 4 </button>
+<button id=11 class='com.google.android.deskclock:id/timer_setup_digit_5'  > 5 </button>
+<button id=12 class='com.google.android.deskclock:id/timer_setup_digit_6'  > 6 </button>
+<button id=13 class='com.google.android.deskclock:id/timer_setup_digit_7'  > 7 </button>
+<button id=14 class='com.google.android.deskclock:id/timer_setup_digit_8'  > 8 </button>
+<button id=15 class='com.google.android.deskclock:id/timer_setup_digit_9'  > 9 </button>
+<button id=16 class='com.google.android.deskclock:id/timer_setup_digit_0'  > 0 </button>
+<div id=17 class='com.google.android.deskclock:id/fab' description='Start' enabled  clickable>  </div>

@@ -1,0 +1,19 @@
+<div id=1  description='Alarm' enabled  clickable> Alarm
+    <p class=''  > Alarm </p>
+ </div>
+<div id=2  description='Clock' enabled  clickable> Clock
+    <p class=''  > Clock </p>
+ </div>
+<div id=3  description='Timer' enabled  clickable> Timer
+    <p class=''  > Timer </p>
+ </div>
+<div id=4  description='Stopwatch' enabled  clickable> Stopwatch
+    <p class=''  > Stopwatch </p>
+ </div>
+<button id=5 class='' description='More options' >  </button>
+<div id=6 class='com.google.android.deskclock:id/timer_time_text' description='5 minutes 21 seconds remaining' enabled  clickable> 5:21 </div>
+<div id=7 class='com.google.android.deskclock:id/timer_label' description='No label specified' enabled  clickable> Label </div>
+<button id=8 class='com.google.android.deskclock:id/reset_add' description='Add 1 minute' > + 1:00 </button>
+<button id=9 class='com.google.android.deskclock:id/left_button' description='Delete' > Delete </button>
+<div id=10 class='com.google.android.deskclock:id/fab' description='Stop' enabled  clickable>  </div>
+<button id=11 class='com.google.android.deskclock:id/right_button' description='Add timer' > Add timer </button>

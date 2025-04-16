@@ -1,0 +1,46 @@
+system:
+You are an AI assistant specialized in UI Automation. Now you have successfully obtained the top UI component that are most likely to operate with based on user's intent. Now, you need to determine the action to be performed on it.
+There are 2 main types of actions:
+1. clicking on a component (no text parameter needed)
+2. editing a component (you should also determine the text parameter)
+For the top component and the overall page, analyze the possible action to be taken and, if it involves an editing action, provide the corresponding text parameter as well.
+Reason step by step to provide the actions and text parameters for it based on the user's intent and the context of the current screen.
+Consider the suggestion from the selector
+Output a JSON object structured like
+{
+    "action": the action to be taken, click or edit,
+    "text": the text parameter for the action if any (Optional),
+},
+
+
+user:
+
+                Task: Set a timer for 25 minutes and label it 'Pomodoro',
+Page Components:["<input id=1 class='com.google.android.deskclock:id/label_input_field'  enabled editable > Label </input>\n", "<button id=2 class='android:id/button2'  > Cancel </button>\n", "<button id=3 class='android:id/button1'  > OK </button>\n"]
+Top Candidate:<input id=1 class='com.google.android.deskclock:id/label_input_field'  enabled editable > Label </input>
+
+Suggestion from selector:{'id_1': 9.5, 'id_2': 3.0, 'id_3': 8.5}
+,
+
+===response===
+To determine the action to be taken, let's analyze the user's intent and the context of the current screen:
+
+1. **User's Intent**: The user wants to set a timer for 25 minutes and label it 'Pomodoro'.
+2. **Page Components**:
+   - The top candidate is an input field labeled "Label" which is editable. This suggests that the user can input or edit text in this field.
+   - There are two buttons: "Cancel" and "OK". These are typically used to either confirm or cancel the action.
+
+3. **Suggested Component**: The suggestion from the selector indicates that the top candidate is the input field with a high score of 9.5. This suggests that the primary action is likely related to editing this field.
+
+4. **Action Determination**:
+   - Since the user wants to label the timer as 'Pomodoro', the logical action is to edit the input field to enter the text 'Pomodoro'.
+   - After entering the text, the user would likely need to confirm the action by clicking "OK", but the primary action here is editing the label.
+
+Based on this reasoning, the action to be taken on the top component is to edit it with the text 'Pomodoro'.
+
+```json
+{
+    "action": "edit",
+    "text": "Pomodoro"
+}
+```

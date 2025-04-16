@@ -1,0 +1,21 @@
+<div id=1  description='Apps list' enabled  clickable>  </div>
+<scroll id=2 class=android.widget.ScrollView >
+    <button id=3 class='com.google.android.apps.nexuslauncher:id/universal_smartspace_container' description='Wednesday, Apr 16' > Wednesday, Apr 16
+    <div id=4 class='com.google.android.apps.nexuslauncher:id/clock' description='Wednesday, Apr 16' enabled  clickable> Wednesday, Apr 16 </div>
+ </button>
+
+    <div id=5  description='ActionRecord' enabled  clickable> ActionRecord </div>
+
+    <div id=6  description='Settings' enabled  clickable> Settings </div>
+
+    <div id=7  description='Clock' enabled  clickable> Clock </div>
+
+    <div id=8  description='Maps' enabled  clickable> Maps </div>
+
+    <div id=9  description='Contacts' enabled  clickable> Contacts </div>
+ </scroll>
+<div id=10  description='Messages' enabled  clickable> Messages </div>
+<div id=11  description='Chrome' enabled  clickable> Chrome </div>
+<button id=12 class='com.google.android.apps.nexuslauncher:id/search_container_all_apps' description='Search,Voice search' > 
+    <div id=13 class='com.google.android.apps.nexuslauncher:id/mic_icon' description='Voice search' enabled  clickable>  </div>
+ </button>

@@ -5,7 +5,6 @@ import os
 from Modules.utility import GPT, decide_prompt
 from UI.init import Screen
 
-openai.api_key = os.getenv('OPENAI_API_KEY')
 
 
 class Decide:
